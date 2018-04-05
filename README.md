@@ -1,6 +1,6 @@
 #NETXML FILTER#
 
-Written to sort through Kismet NETXML data for YOLOcon 2018
+Written to sort through Kismet NETXML data for YOLOcon 2018, using perl becuase I'm a scrub.
 
 If you have NETXML data to sort through, you can use this to look for
 Beacons and Probe Responses and associated security features (Encryption Level,
