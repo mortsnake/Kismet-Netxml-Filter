@@ -1,14 +1,13 @@
 #!/usr/bin/perl
 
 use strict;
-use diagnostics;
+#use diagnostics;
 use v5.10.1;
 use Tie::File;
 
 #sets some important vars
-my ($filepath, $fileout);
-my $filelinenum = 0;
-my $curlinenum = 0;
+my ($filepath, $fileout, $yn);
+my ($filelinenum, $curlinenum, $dupes) = 0;
 my @bssids;
 my %dupe;
 my $starttime = time();
@@ -76,8 +75,7 @@ foreach my $line (@tiefile){
 close $results;
 
 print "Wold you like to check for duplicate BSSIDs? ([y]/n) ";
-chomp(my $yn = <STDIN>);
-my $dupes = 0;
+chomp($yn = <STDIN>);
 
 if ($yn eq 'y' || $yn eq ''){
   tie my @restests, 'Tie::File', $fileout or die "Error: $!";
@@ -91,9 +89,12 @@ if ($yn eq 'y' || $yn eq ''){
     print "$line is a duplicate BSSID!\n";
     $dupes++;
   }
-  my $endtime = time();
-  print "Read $filelinenum lines in ", $endtime - $starttime, " seconds with $dupes duplicate entries and output data \nto $fileout\n";
+  my $endtime = time() - $starttime;
+  printf ("\n\tRead %d lines in %d seconds and detected %d duplicate entries.  \
+  \t\tAll data successfully written to %s\n", $filelinenum, $endtime, $dupes, $fileout);
+
 }else{
-  my $endtime = time();
-  print "Read $filelinenum lines in ", $endtime - $starttime, " seconds with $dupes duplicate entries and output data \nto $fileout\n";
+  my $endtime =  time() - $starttime;
+  printf ("\n\tRead %d lines in %d seconds and didn't look for duplicate entries.  \
+  \t\tAll data successfully written to %s\n", $filelinenum, $endtime, $fileout);
 }
